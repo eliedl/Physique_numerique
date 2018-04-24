@@ -6,7 +6,7 @@ N = 1000
 L = 1
 
 x = np.linspace(0, L, N+1)
-y = np.load('carlos.npy')
+y = np.load('./carlos.npy')
 
 #y = y[:, ::10]
 
@@ -42,8 +42,8 @@ anim = animation.FuncAnimation(fig, animate, init_func=init,
 # your system: for more information, see
 # http://matplotlib.sourceforge.net/api/animation_api.html
 
-plt.rcParams['animation.ffmpeg_path'] ='C:\\ffmpeg\\bin\\ffmpeg.exe'
-FFwriter = animation.FFMpegWriter(fps=30, extra_args=['-vcodec', 'libx264'])
-anim.save('animation_carlos_2.mp4', writer = FFwriter)
+#plt.rcParams['animation.ffmpeg_path'] ='C:\\ffmpeg\\bin\\ffmpeg.exe'
+#FFwriter = animation.FFMpegWriter(fps=30, extra_args=['-vcodec', 'libx264'])
+#anim.save('animation_carlos_2.mp4', writer = FFwriter)
 
 plt.show()
