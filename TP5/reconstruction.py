@@ -57,13 +57,11 @@ def laminogram():
         print("working on image column: "+str(j+1)+"/"+str(geo.nbvox))
         for i in range(geo.nbvox): # lignes de l'image
                 #rotation et translation de l'espace
-                dist = np.array(distance_point_droite(i, j,x0,y0,angles))
-                dist = dist*2*half_sino/(geo.nbvox)
+                dist = np.array(distance_point_droite(i, j, x0, y0, angles))
+                dist = np.sqrt(1.9) * dist * half_sino / (geo.nbvox)
                 index_inf = (half_sino + dist).astype(int)
-                for theta, index in zip(sinogram, index_inf):
-                    if index > len(theta-1):
-                        continue
-                    image[j, i] += theta[index]
+                x = np.arange(0, len(sinogram))
+                image[j, i] += np.sum(sinogram[(x, index_inf)])
 
 
     util.saveImage(image, "lam")
@@ -90,14 +88,8 @@ def backproject():
         print("working on image column: "+str(j+1)+"/"+str(geo.nbvox))
         for i in range(geo.nbvox): # lignes de l'image
             dist = np.array(distance_point_droite(i, j, x0, y0, angles))
-            #dist = 2*dist * half_sino / (geo.nbvox)
             dist = np.sqrt(1.9) * dist * half_sino / (geo.nbvox)
-
             index_inf = (half_sino + dist).astype(int)
-            #for theta, index in zip(sinogram, index_inf):
-            #    if index > len(theta)-1:
-            #        continue
-            #    image[j, i] += theta[index]
             x = np.arange(0,len(sinogram))
             image[j, i] += np.sum(sinogram[(x,index_inf)])
 
