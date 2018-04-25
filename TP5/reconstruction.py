@@ -8,12 +8,16 @@
 # libs
 import numpy as np
 import time
+import matplotlib.pyplot as plt
 
 # local files
 import geometry as geo
 import util as util
 import CTfiltre as CTfilter
-
+#fuckoff
+def distance_point_droite(x, y, x0, y0, theta):
+    dx =  (x0-x)*np.cos(theta) - (y0-y)*np.sin(theta)
+    return dx
 ## créer l'ensemble de données d'entrée à partir des fichiers
 def readInput():
     # lire les angles
@@ -44,17 +48,24 @@ def laminogram():
 
     # initialiser une image reconstruite
     image = np.zeros((geo.nbvox, geo.nbvox))
-
     # "etaler" les projections sur l'image
     # ceci sera fait de façon "voxel-driven"
     # pour chaque voxel, trouver la contribution du signal reçu
+    x0 = y0 = geo.nbvox/2
+    half_sino = sinogram.shape[1]/2
     for j in range(geo.nbvox): # colonnes de l'image
         print("working on image column: "+str(j+1)+"/"+str(geo.nbvox))
         for i in range(geo.nbvox): # lignes de l'image
-            for a in range(len(angles)):
+                #rotation et translation de l'espace
+                dist = np.array(distance_point_droite(i, j,x0,y0,angles))
+                dist = dist*2*half_sino/(geo.nbvox)
+                index_inf = (half_sino + dist).astype(int)
+                for theta, index in zip(sinogram, index_inf):
+                    if index > len(theta-1):
+                        continue
+                    image[j, i] += theta[index]
 
-                
-                
+
     util.saveImage(image, "lam")
 
 
@@ -67,19 +78,29 @@ def backproject():
     image = np.zeros((geo.nbvox, geo.nbvox))
     
     ### option filtrer ###
-    CTfilter.filterSinogram(sinogram)
+    #CTfilter.filterSinogram(sinogram)
     ######
     
     # "etaler" les projections sur l'image
     # ceci sera fait de façon "voxel-driven"
     # pour chaque voxel, trouver la contribution du signal reçu
+    x0 = y0 = geo.nbvox / 2
+    half_sino = sinogram.shape[1] / 2
     for j in range(geo.nbvox): # colonnes de l'image
         print("working on image column: "+str(j+1)+"/"+str(geo.nbvox))
         for i in range(geo.nbvox): # lignes de l'image
-            for a in range(len(angles)):
-                #votre code ici
-               
-    
+            dist = np.array(distance_point_droite(i, j, x0, y0, angles))
+            #dist = 2*dist * half_sino / (geo.nbvox)
+            dist = np.sqrt(1.9) * dist * half_sino / (geo.nbvox)
+
+            index_inf = (half_sino + dist).astype(int)
+            #for theta, index in zip(sinogram, index_inf):
+            #    if index > len(theta)-1:
+            #        continue
+            #    image[j, i] += theta[index]
+            x = np.arange(0,len(sinogram))
+            image[j, i] += np.sum(sinogram[(x,index_inf)])
+
     util.saveImage(image, "fbp")
 
 
@@ -105,8 +126,8 @@ def reconFourierSlice():
 
 ## main ##
 start_time = time.time()
-laminogram()
-#backproject()
+#laminogram()
+backproject()
 #reconFourierSlice()
 print("--- %s seconds ---" % (time.time() - start_time))
 
