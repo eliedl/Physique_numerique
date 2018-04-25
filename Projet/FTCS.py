@@ -114,7 +114,7 @@ def diffusion(N, h, L=0.01, D=4.25e-6):
         if abs(t - t5) < epsilon:
             plt.plot(x, T, c='C2', alpha=1, label='10')
 
-    plt.legend()
+    #plt.legend()
     plt.xlabel('$x$ [m]')
     plt.ylabel(r'$T$ [$^\circ$C]')
     plt.show()
