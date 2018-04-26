@@ -24,16 +24,16 @@ nbpix = 336
 ### paramètres de reconstruction ###
 
 ## taille de la grille d'image (carrée)
-nbvox = 96 # options: 96, 192
+nbvox = 192 # options: 96, 192
 
 ## taille du voxel (carré) (cm)
-voxsize = 0.4 # option: 0.4, 0.2
+voxsize = 0.2 # option: 0.4, 0.2
 
 ## fichiers d'entrée
 dataDir = "./data/"
 anglesFile = "angles.txt"
 #sinogramFile = "sinogram-password.txt"
-#sinogramFile = "sinogram-patient.txt"
-sinogramFile = "sino_fftfiltre.txt"
+sinogramFile = "sinogram-patient.txt"
+#sinogramFile = "sino_fftfiltre.txt"
 
 

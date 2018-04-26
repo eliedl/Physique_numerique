@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import util as util
 
 #from reconstruction import laminogram
 sinogram = np.loadtxt("data/sinogram-patient.txt")
@@ -16,6 +17,8 @@ for line in sinogram:
     filtered_sinogram.append(newline.real)
 
 #print(filtered_sinogram)
+util.saveImage(sinogram, "Non-filtre")
 plt.imshow(filtered_sinogram)
+
 plt.show()
 np.savetxt("data/sino_fftfiltre.txt",filtered_sinogram)

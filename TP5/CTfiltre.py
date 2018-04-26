@@ -19,3 +19,4 @@ def filterLine(projection):
 
     # votre code ici
     
+    pass

@@ -116,6 +116,7 @@ def reconFourierSlice():
         fft_sino.append(np.fft.fftshift(np.fft.fft(np.fft.ifftshift(line))))
 
     sinogram = np.array(fft_sino)
+
     linefunc = lambda x, a, b: a*x+b
     testat = []
     for j in range(geo.nbvox):  # colonnes de l'image
@@ -140,23 +141,27 @@ def reconFourierSlice():
             reste = rindex%1
             inf = line[rinf]
             sup = line[rsup]
-            image[j, i] += (reste * (sup - inf) + inf)
+            #image[j, i] += (reste * (sup - inf) + inf)
+            image[j, i] += (sup+ inf)/2
             testat.append(rindex)
 
-    plt.plot(testat)
-    plt.show()
-    plt.imshow(image.real)
-    plt.show()
     image_ifft = np.fft.fftshift(np.fft.ifft2((np.fft.ifftshift(((image))))))
-    util.saveImage(abs(image_ifft), "toto")
+    util.saveImage(abs(image_ifft), "TdF slice Hi-Res")
 
 
 ## main ##
-start_time = time.time()
+
 #laminogram()
 #backproject()
-reconFourierSlice()
-#reconFourierSlice()
 
-print("--- %s seconds ---" % (time.time() - start_time))
+reconFourierSlice()
+#t = []
+#for i in range(10):
+#    start_time = time.time()
+#    reconFourierSlice()
+#    t.append(time.time() - start_time)
+#t = np.array(t)
+#print('Temps moyen d\'exécution', np.mean(t))
+
+
 
