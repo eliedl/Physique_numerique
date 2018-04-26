@@ -104,6 +104,7 @@ def diffusion(N, h, L=0.01, D=4.25e-6):
         t+= h
 
         if abs(t-t1)<epsilon:
+
             plt.plot(x, T, c='C2', alpha=0.2, label='0.01')
         if abs(t - t2) < epsilon:
             plt.plot(x, T, c='C2', alpha=0.4, label='0.1')
@@ -134,6 +135,6 @@ if __name__ == '__main__':
     #np.save("carlos",x)
 
     plt.style.use('seaborn-talk')
-    diffusion(100, 1e-4)
+    diffusion(100, 1.18e-3)
 
 
