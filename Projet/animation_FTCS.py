@@ -2,11 +2,14 @@ import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib import animation
 
+#N = 1000
+#L = 1
+
 N = 1000
-L = 1
+L = 1e-8
 
 x = np.linspace(0, L, N+1)
-y = np.load('./carlos.npy')
+y = np.load('./Schro_alt.npy')
 
 #y = y[:, ::10]
 
@@ -16,7 +19,7 @@ y = np.load('./carlos.npy')
 print(y.shape)
 # First set up the figure, the axis, and the plot element we want to animate
 fig = plt.figure()
-ax = plt.axes(xlim=(0, 1), ylim=(-0.003, 0.003))
+ax = plt.axes(xlim=(0, 1e-8), ylim=(-0.003, 0.003))
 line, = ax.plot([], [], lw=2)
 
 ax.set_xlabel('$x$')
@@ -29,7 +32,7 @@ def init():
 
 # animation function.  This is called sequentially
 def animate(i):
-    line.set_data(x, y[:, i+1])
+    line.set_data(x, y[:, i+1].real)
     return line,
 
 # call the animator.  blit=True means only re-draw the parts that have changed.
