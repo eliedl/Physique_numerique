@@ -16,7 +16,7 @@ def wave(L, N, tmax = 0.1, Nt = 1000, fps = 50, plot=False):
     #-------------------------
     v = 100           # Vitesse
     a = L/N           # Spacing
-    h = 1e-8        # Time step
+    h = tmax/Nt       # Time step
     epsilon = h/1000
 
     c = h*v**2/(2*a**2)
@@ -63,16 +63,20 @@ def wave(L, N, tmax = 0.1, Nt = 1000, fps = 50, plot=False):
 
     res = np.zeros((N+1, 1))
     count = 0
+    pas = tmax/100
     while t<tmax:
-        print(t, abs(t-t1))
         Phi_p = np.dot(M, Phi)
 
         t+= h
 
         Phi, Phi_p = Phi_p, Phi
-
+        if t > pas*count:
+            print(t, abs(t - t1))
+            count+= 1
+            res = np.hstack((res, Phi[:1001].reshape(N + 1, 1)))
+        '''
         if abs(t - t1) < epsilon:
-            plt.plot(Phi)
+            plt.plot(Phi[:1001])
             plt.show()
         if abs(t - t2) < epsilon:
             plt.plot(Phi)
@@ -80,6 +84,7 @@ def wave(L, N, tmax = 0.1, Nt = 1000, fps = 50, plot=False):
         if abs(t - t3) < epsilon:
             plt.plot(Phi)
             plt.show()
+        '''
     return res
 
 def schro(N=1000, L=1e-8, h=1e-18):
