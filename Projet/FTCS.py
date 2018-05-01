@@ -122,19 +122,22 @@ def diffusion(N, h, L=0.01, D=4.25e-6):
 
 
 
-
-
 if __name__ == '__main__':
 
-    #N = 1000
-    #x = np.linspace(0, 1, N)
-    #phi = np.zeros(N+1)
-    #psi = speed(x)
-    #tmax = 0.090
-    #x = propagation(1, N, tmax = tmax, Nt = 5e6, fps = 500//tmax)
-    #np.save("carlos",x)
+    N = 1000
+    x = np.linspace(0, 1, N+1)
+    phi = np.zeros(N+1)
+    psi = speed(x)
 
     plt.style.use('seaborn-talk')
-    diffusion(100, 1.18e-3)
+    plt.plot(x, psi)
+    plt.ylabel(r'$\psi(x, 0)$', fontsize=16)
+    plt.xlabel(r'$x$', fontsize=16)
+    plt.show()
+    #tmax = 0.090
+    #x = propagation(1, N, tmax = tmax, Nt = 5e6, fps = 500//tmax)
+    #print(x.shape)
+
+    #diffusion(100, 1.18e-3)
 
 

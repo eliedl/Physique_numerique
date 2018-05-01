@@ -6,6 +6,7 @@ L = 1
 
 x = np.linspace(0, L, N+1)
 y = np.load('./carlos.npy')
+print(y.shape)
 
 plt.plot(x, y[:, 4], c='C0', alpha=0.4, label='20 ms')
 plt.plot(x, y[:, 9], c='C0', alpha=0.6, label='40 ms')

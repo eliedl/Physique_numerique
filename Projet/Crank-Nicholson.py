@@ -10,13 +10,14 @@ def tridiag(a, b, c, k1=-1, k2=0, k3=1):
 def cond_init(x, x0, sigma=1e-10, k=5e10):
     return np.exp(-(x-x0)**2/(2*sigma**2))*np.exp(1j*k*x)
 
-def wave(L, N, tmax = 0.1, Nt = 1000, fps = 50, plot=False):
+def wave(L, N, tmax, Nt, fps = 50, plot=False):
 
     # Parametres d'intégration
     #-------------------------
     v = 100           # Vitesse
     a = L/N           # Spacing
     h = tmax/Nt       # Time step
+    print(h)
     epsilon = h/1000
 
     c = h*v**2/(2*a**2)
@@ -51,8 +52,6 @@ def wave(L, N, tmax = 0.1, Nt = 1000, fps = 50, plot=False):
 
     M_m_I = np.linalg.inv(M_m)
     M = np.dot(M_m_I, M_p)
-    print(M)
-
 
     t1 = 0.001
     t2 = 0.05
@@ -63,16 +62,14 @@ def wave(L, N, tmax = 0.1, Nt = 1000, fps = 50, plot=False):
 
     res = np.zeros((N+1, 1))
     count = 0
-    pas = tmax/100
     while t<tmax:
         Phi_p = np.dot(M, Phi)
-
         t+= h
 
         Phi, Phi_p = Phi_p, Phi
-        if t > pas*count:
+        if t > count/fps:
             print(t, abs(t - t1))
-            count+= 1
+            count += 1
             res = np.hstack((res, Phi[:1001].reshape(N + 1, 1)))
         '''
         if abs(t - t1) < epsilon:
@@ -157,13 +154,15 @@ def schro(N=1000, L=1e-8, h=1e-18):
 
 
 if __name__ == '__main__':
-    #N = 1000
-    #x = np.linspace(0, 1, N)
-    #tmax = 0.090
-    #wave(1, N, tmax = tmax, Nt = 5e6, fps = 500//tmax)
+    N = 1000
+    x = np.linspace(0, 1, N)
+    tmax = 0.090
+    s = wave(1, N, tmax=tmax, Nt=5e4, fps=500//tmax)
+    print(s.shape)
+    np.save('Wave', s)
 
-    s = schro()
-    np.save('Schro_alt', s)
+    #s = schro()
+    #np.save('Schro_alt', s)
 
 
 
